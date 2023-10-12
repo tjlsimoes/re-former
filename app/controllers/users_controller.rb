@@ -3,6 +3,9 @@ class UsersController < ApplicationController
 		@user = User.new
 	end
 
+	def edit
+	end
+
 	def create
 		# To work with form_tag: 
 		# @user = User.new(username: params[:username], email: params[:email][:address], password: params[:password])
@@ -20,7 +23,19 @@ class UsersController < ApplicationController
 		end
 	end
 
+	def update
+		if @user.update
+			redirect_to new_user_path
+		else
+			render :edit, status: :unprocessable_entity
+		end
+	end
+
 	private
+	def set_user
+		@user = User.find(params[:id])
+	end
+
 	def user_params
 		params.require(:user).permit(:username, :email, :password)
 	end
