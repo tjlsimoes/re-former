@@ -4,6 +4,7 @@ class UsersController < ApplicationController
 	end
 
 	def edit
+		@user = User.find(params[:id])
 	end
 
 	def create
@@ -24,7 +25,9 @@ class UsersController < ApplicationController
 	end
 
 	def update
-		if @user.update
+		@user = User.find(params[:id])
+
+		if @user.update(user_params)
 			redirect_to new_user_path
 		else
 			render :edit, status: :unprocessable_entity
@@ -32,10 +35,6 @@ class UsersController < ApplicationController
 	end
 
 	private
-	def set_user
-		@user = User.find(params[:id])
-	end
-
 	def user_params
 		params.require(:user).permit(:username, :email, :password)
 	end
